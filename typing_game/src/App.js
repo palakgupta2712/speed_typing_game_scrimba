@@ -6,6 +6,13 @@ function App() {
   function handleInput(event){
     setText(event.target.value)
   }
+
+  function wordCount(text){
+    const wordsArray = text.trim().split(" ")
+    const filterWords = wordsArray.filter(word => word !== "")
+    console.log(filterWords.length)
+    return filterWords
+  }
   console.log(text)
 
   return (
@@ -19,7 +26,8 @@ function App() {
       />
       <br/>
       <Header as='h3'> Time Remaining : </Header>
-      <Button color='blue'>START</Button>
+      <Button color='blue' onClick={() => wordCount(text)}>START</Button>
+      <Header as='h3'> Word Count : </Header>
     </Container>
   );
 }
