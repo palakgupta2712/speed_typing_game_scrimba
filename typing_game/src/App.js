@@ -4,15 +4,18 @@ import {Container, Header, TextArea, Button} from 'semantic-ui-react'
 function App() {
   const [text, setText] = useState("")
   const [timeRemaining, setTimeRemaining] = useState(5)
+  const [isTimeRunning, setIsTimeRunning] = useState(false)
 
   useEffect(() => {
-    if(timeRemaining>0){
+    if(isTimeRunning && timeRemaining>0){
       setTimeout(() => {
         setTimeRemaining(time => time - 1 )
-        console.log(timeRemaining)
     }, 1000)
-  }},[timeRemaining])
-
+  } else if(timeRemaining === 0 ){
+    setIsTimeRunning(false)
+}
+},[timeRemaining, isTimeRunning])
+  
   function handleInput(event){
     setText(event.target.value)
   }
@@ -24,7 +27,6 @@ function App() {
     return filterWords
   }
   
-
   return (
     <Container  textAlign='center'>
       <br/>
@@ -36,7 +38,7 @@ function App() {
       />
       <br/>
       <Header as='h3'> Time Remaining : {timeRemaining}</Header>
-      <Button color='blue' onClick={() => wordCount(text)}>START</Button>
+      <Button color='blue' onClick={() => setIsTimeRunning(true)}>START</Button>
       <Header as='h3'> Word Count : </Header>
     </Container>
   );
