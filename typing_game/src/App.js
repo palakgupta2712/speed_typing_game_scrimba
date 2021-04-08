@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import 'semantic-ui-css/semantic.min.css'
-import {Container, Header, TextArea, Button} from 'semantic-ui-react'
+import {Container, Header, Button} from 'semantic-ui-react'
 function App() {
   const STARTING_TIME = 5
   const [text, setText] = useState("")
   const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
   const [wordCount, setWordCount] = useState(0)
-
+  const inputRef = useRef(null)
   useEffect(() => {
     if(isTimeRunning && timeRemaining>0){
       setTimeout(() => {
@@ -33,6 +33,8 @@ function App() {
     setIsTimeRunning(true)
     setTimeRemaining(STARTING_TIME)
     setText("")
+    inputRef.current.disabled = false
+    inputRef.current.focus()
     // setWordCount(0)
   }
   
@@ -40,7 +42,8 @@ function App() {
     <Container  textAlign='center'>
       <br/>
       <Header as='h1'> Speed Typing Game</Header>
-      <TextArea 
+      <textarea 
+          ref={inputRef}
           className="textarea"
           value={text}
           onChange={handleInput} 
