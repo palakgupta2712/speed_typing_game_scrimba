@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react'
 import 'semantic-ui-css/semantic.min.css'
 import {Container, Header, TextArea, Button} from 'semantic-ui-react'
 function App() {
+  const STARTING_TIME = 5
   const [text, setText] = useState("")
-  const [timeRemaining, setTimeRemaining] = useState(5)
+  const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
+  const [wordCount, setWordCount] = useState(0)
 
   useEffect(() => {
     if(isTimeRunning && timeRemaining>0){
@@ -13,6 +15,7 @@ function App() {
     }, 1000)
   } else if(timeRemaining === 0 ){
     setIsTimeRunning(false)
+    setWordCount(wordCounter(text))
 }
 },[timeRemaining, isTimeRunning])
   
@@ -20,11 +23,17 @@ function App() {
     setText(event.target.value)
   }
 
-  function wordCount(text){
+  function wordCounter(text){
     const wordsArray = text.trim().split(" ")
     const filterWords = wordsArray.filter(word => word !== "")
-    console.log(filterWords.length)
-    return filterWords
+    return filterWords.length
+  }
+
+  function startTimer(){
+    setIsTimeRunning(true)
+    setTimeRemaining(STARTING_TIME)
+    setText("")
+    // setWordCount(0)
   }
   
   return (
@@ -34,12 +43,19 @@ function App() {
       <TextArea 
           className="textarea"
           value={text}
-          onChange={handleInput}    
+          onChange={handleInput} 
+          disabled={!isTimeRunning}   
       />
       <br/>
       <Header as='h3'> Time Remaining : {timeRemaining}</Header>
-      <Button color='blue' onClick={() => setIsTimeRunning(true)}>START</Button>
-      <Header as='h3'> Word Count : </Header>
+      <Button 
+          color='blue'
+          onClick={startTimer}
+          disabled={isTimeRunning}
+      >
+        START
+      </Button>
+      <Header as='h3'> Word Count : {wordCount}</Header>
     </Container>
   );
 }

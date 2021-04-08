@@ -19,3 +19,7 @@ code {
   background: papayawhip;
   outline: none;
 }
+
+.textarea:disabled{
+  background: #eee;
+}
